@@ -1,0 +1,36 @@
+{
+  "name": "yprisoner/mexysopen",
+  "description": "萤石云开发SDK",
+  "authors": [
+    {
+      "name": "yprisoner",
+      "email": "yyprisoner@gmail.com"
+    }
+  ],
+  "license": "MIT",
+  "type": "library",
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=7.0",
+    "guzzlehttp/guzzle": "6.3",
+    "psr/log": "^1.1@dev"
+  },
+  "require-dev": {
+  },
+  "autoload": {
+    "psr-4": {
+      "YsOpen\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "YsOpen\\Tests\\": "tests/"
+    }
+  },
+  "repositories": {
+    "packagist": {
+      "type": "composer",
+      "url": "https://mirrors.aliyun.com/composer/"
+    }
+  }
+}
