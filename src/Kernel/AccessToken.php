@@ -9,14 +9,10 @@
 
 namespace Kernel;
 
-
-use Kernel\Traits\HttpRequestTrait;
-use Psr\Http\Message\RequestInterface;
 use RuntimeException;
 use YsOpen\Kernel\Contracts\AccessTokenInterface;
 
 class AccessToken implements AccessTokenInterface {
-    use HttpRequestTrait;
 
     /**
      * @var Application
@@ -39,28 +35,28 @@ class AccessToken implements AccessTokenInterface {
     protected $cachePrefix = 'mex.ysopen.access.token.';
 
     /**
-     * AccessToken constructor.
      * @param Application $app
      */
-    public function __construct(Application $app) {
+    public function setApp(Application $app)
+    {
         $this->app = $app;
     }
 
 
     /**
      * @param bool $refresh
-     * @return array
+     * @return string
      * @throws Exception\HttpException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function getToken(bool $refresh = false): array {
+    public function getToken(bool $refresh = false): string {
         $cacheKey = $this->getCacheKey();
         $cacheHandler = $this->app->getCacheHandler();
         if (!$refresh && $cacheHandler->has($cacheKey)) {
             return $cacheHandler->get($cacheKey);
         }
 
-        $result = $this->doPost(
+        $result = $this->app->doPost(
             $this->accessTokenUri, array (
                 'appKey'    =>  $this->app->getAppKey(),
                 'appSecret' =>  $this->app->getAppSecret()

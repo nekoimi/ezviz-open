@@ -16,9 +16,9 @@ namespace YsOpen\Kernel\Contracts;
 interface AccessTokenInterface {
 
     /**
-     * @return array
+     * @return string
      */
-    public function getToken(): array ;
+    public function getToken(): string ;
 
     /**
      * @return AccessTokenInterface

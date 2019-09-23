@@ -6,12 +6,11 @@
  * #                            ------
  **/
 
-
 namespace Kernel\Types;
-
 use Kernel\Exception\ConfigErrorException;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
+use YsOpen\Kernel\Contracts\ConsumerHandlerInterface;
 
 /**
  * Class Config
@@ -45,55 +44,61 @@ class Config {
     private $logHandler;
 
     /**
+     * @var ConsumerHandlerInterface
+     */
+    private $consumerHandler;
+
+    /**
      * Config constructor.
      * @param array $config
      * @throws ConfigErrorException
      */
     public function __construct(array $config) {
-        if (array_key_exists('baseUri', $config)) {
-            $this->baseUri = $config['baseUri'];
-        }
-        if (array_key_exists('appKey', $config)) {
-            $this->appKey = $config['appKey'];
-        }
-        if (array_key_exists('appSecret', $config)) {
-            $this->appSecret = $config['appSecret'];
-        }
-        if (array_key_exists('cacheHandler', $config)) {
-            $cacheHandler = $config['cacheHandler'];
-            if (is_string($cacheHandler)) {
-                if (class_exists($cacheHandler)) {
-                    $cacheNew = new $cacheHandler;
-                    if ($cacheNew instanceof CacheInterface) {
-                        $this->cacheHandler = $cacheNew;
-                    }
-                }
-            }elseif (is_object($cacheHandler)) {
-                if ($cacheHandler instanceof CacheInterface) {
-                    $this->cacheHandler = $cacheHandler;
-                }
-            }
-        }
-        if (array_key_exists('logHandler', $config)) {
-            $logHandler = $config['logHandler'];
-            if (is_string($logHandler)) {
-                if (class_exists($logHandler)) {
-                    $logNew = new $logHandler;
-                    if ($logNew instanceof CacheInterface) {
-                        $this->logHandler = $logNew;
-                    }
-                }
-            }elseif (is_object($logHandler)) {
-                if ($logHandler instanceof CacheInterface) {
-                    $this->logHandler = $logHandler;
-                }
-            }
-        }
+        $this->setConfig('baseUri', $config);
+        $this->setConfig('appKey', $config);
+        $this->setConfig('appSecret', $config);
+        $this->setHandler('cacheHandler', $config, CacheInterface::class);
+        $this->setHandler('logHandler', $config, LoggerInterface::class);
+        $this->setHandler('consumerHandler', $config, ConsumerHandlerInterface::class);
 
         if (is_null($this->cacheHandler) || is_null($this->logHandler)) {
             throw new ConfigErrorException(
                 sprintf("Config err. cacheHandler or logHandler err.")
             );
+        }
+    }
+
+
+    /**
+     * @param string $configName
+     * @param array $config
+     */
+    private function setConfig(string $configName, array $config) {
+        if (array_key_exists($configName, $config)) {
+            $this->{$configName} = $config[$configName];
+        }
+    }
+
+    /**
+     * @param string $handlerName
+     * @param array $handlers
+     * @param $interfaceClass
+     */
+    private function setHandler(string $handlerName, array $handlers, $interfaceClass) {
+        if (array_key_exists($handlerName, $handlers)) {
+            $handlerHandler = $handlers[$handlerName];
+            if (is_string($handlerHandler)) {
+                if (class_exists($handlerHandler)) {
+                    $handlerHandlerNew = new $handlerHandler;
+                    if ($handlerHandlerNew instanceof $interfaceClass) {
+                        $this->{$handlerName} = $handlerHandlerNew;
+                    }
+                }
+            }elseif (is_object($handlerName)) {
+                if ($handlerName instanceof $interfaceClass) {
+                    $this->{$handlerName} = $handlerName;
+                }
+            }
         }
     }
 
@@ -105,24 +110,10 @@ class Config {
     }
 
     /**
-     * @param string $baseUri
-     */
-    public function setBaseUri(string $baseUri) {
-        $this->baseUri = $baseUri;
-    }
-
-    /**
      * @return string
      */
     public function getAppKey(): string {
         return $this->appKey;
-    }
-
-    /**
-     * @param string $appKey
-     */
-    public function setAppKey(string $appKey) {
-        $this->appKey = $appKey;
     }
 
     /**
@@ -133,24 +124,10 @@ class Config {
     }
 
     /**
-     * @param string $appSecret
-     */
-    public function setAppSecret(string $appSecret) {
-        $this->appSecret = $appSecret;
-    }
-
-    /**
      * @return CacheInterface
      */
     public function getCacheHandler(): CacheInterface {
         return $this->cacheHandler;
-    }
-
-    /**
-     * @param CacheInterface $cacheHandler
-     */
-    public function setCacheHandler(CacheInterface $cacheHandler) {
-        $this->cacheHandler = $cacheHandler;
     }
 
     /**
@@ -161,10 +138,11 @@ class Config {
     }
 
     /**
-     * @param LoggerInterface $logHandler
+     * @return ConsumerHandlerInterface
      */
-    public function setLogHandler(LoggerInterface $logHandler) {
-        $this->logHandler = $logHandler;
+    public function getConsumerHandler(): ConsumerHandlerInterface
+    {
+        return $this->consumerHandler;
     }
 
 }

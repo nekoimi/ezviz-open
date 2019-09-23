@@ -2,14 +2,7 @@
 /**
  * # ----
  * #     Yprisoner <yyprisoner@gmail.com>
- * #                   2019/9/22 22:08
+ * #                   19-9-23 下午3:14
  * #                            ------
  **/
-
-
-namespace YsOpen\Kernel;
-
-
-class BaseClient {
-
-}
+require_once __DIR__ . '/../vendor/autoload.php';

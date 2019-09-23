@@ -6,16 +6,18 @@
  * #                            ------
  **/
 
-
 namespace YsOpen;
 
-
+use Kernel\AccessToken;
 use Kernel\Application;
 use Kernel\Types\Config;
+use YsOpen\IntelligenceClient\Client as IntelligenceClient;
 
 /**
  * Class YsOpenFactory
  * @package YsOpen
+ *
+ * @method static IntelligenceClient intelligenceClient(array $config)
  */
 class YsOpenFactory {
 
@@ -26,14 +28,16 @@ class YsOpenFactory {
      * @throws \Kernel\Exception\ConfigErrorException
      * @throws \ReflectionException
      */
-    public static function create(string $appName, array $config) {
+    protected static function create(string $appName, array $config) {
         $namespace = ucfirst($appName);
-        $applicationClass = "\\YsOpen\\{$namespace}\\Application";
+        $applicationClass = "\\YsOpen\\{$namespace}\\Client";
         /**@var Application $application*/
         $application = new $applicationClass;
         $application::mixin(
             new Config($config)
         );
+        $accessToken = new AccessToken();
+        $application->setAccessToken($accessToken);
         return $application;
     }
 

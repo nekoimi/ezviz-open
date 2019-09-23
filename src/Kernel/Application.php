@@ -10,26 +10,39 @@
 namespace Kernel;
 
 
+use Kernel\Traits\HttpRequestTrait;
 use Kernel\Traits\MacroableTrait;
 use Psr\Log\LoggerInterface;
 use Psr\SimpleCache\CacheInterface;
+use YsOpen\Kernel\Contracts\ConsumerHandlerInterface;
 
 /**
  * Class Application
  * @package Kernel
  *
  * @method string getBaseUri()
- * @method setBaseUri(string $baseUri)
  * @method string getAppKey()
- * @method setAppKey(string $appKey)
  * @method string getAppSecret()
- * @method setAppSecret(string $appSecret)
  * @method CacheInterface getCacheHandler()
- * @method setCacheHandler(CacheInterface $cacheHandler)
  * @method LoggerInterface getLogHandler()
- * @method setLogHandler(LoggerInterface $cacheHandler)
+ * @method ConsumerHandlerInterface getConsumerHandler()
  */
 abstract class Application {
-    use MacroableTrait;
+    use HttpRequestTrait,
+        MacroableTrait;
+
+    /**
+     * @var AccessToken
+     */
+    protected $accessToken;
+
+    /**
+     * @param AccessToken $accessToken
+     */
+    public function setAccessToken(AccessToken $accessToken)
+    {
+        $this->accessToken = $accessToken;
+        $this->accessToken->setApp($this);
+    }
 
 }
