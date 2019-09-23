@@ -20,9 +20,4 @@ interface AccessTokenInterface {
      */
     public function getToken(): string ;
 
-    /**
-     * @return AccessTokenInterface
-     */
-    public function refresh(): self ;
-
 }

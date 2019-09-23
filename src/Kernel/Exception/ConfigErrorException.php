@@ -7,7 +7,7 @@
  **/
 
 
-namespace Kernel\Exception;
+namespace YsOpen\Kernel\Exception;
 
 
 class ConfigErrorException extends YsOpenException {

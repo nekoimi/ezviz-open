@@ -23,7 +23,6 @@ interface ConsumerHandlerInterface {
      * @param array $message 消息体
      * @param string $groupId 消息组
      * @param callable|null $commitCallback
-     * @return mixed
      */
     public function handle(string $consumerId, array $message, string $groupId = 'group1', callable $commitCallback = null);
 

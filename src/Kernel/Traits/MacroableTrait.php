@@ -7,7 +7,7 @@
  **/
 
 
-namespace Kernel\Traits;
+namespace YsOpen\Kernel\Traits;
 
 use BadMethodCallException;
 use Closure;
@@ -40,7 +40,9 @@ trait MacroableTrait {
         );
 
         foreach ($methods as $method) {
-            static::macro($method->name, $method->invoke($mixin));
+            if (! $method->isConstructor()) {
+                static::macro($method->name, [$mixin, $method->name]);
+            }
         }
     }
 

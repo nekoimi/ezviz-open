@@ -6,9 +6,7 @@
  * #                            ------
  **/
 
-
-namespace Kernel\Exception;
-
+namespace YsOpen\Kernel\Exception;
 
 class HttpException extends YsOpenException {
     //

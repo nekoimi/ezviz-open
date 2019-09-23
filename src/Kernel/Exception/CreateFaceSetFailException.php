@@ -7,7 +7,6 @@
  **/
 
 namespace YsOpen\Kernel\Exception;
-use Kernel\Exception\YsOpenException;
 
 class CreateFaceSetFailException extends YsOpenException {
     //

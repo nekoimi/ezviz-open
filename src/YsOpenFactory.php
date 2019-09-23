@@ -8,9 +8,10 @@
 
 namespace YsOpen;
 
-use Kernel\AccessToken;
-use Kernel\Application;
-use Kernel\Types\Config;
+use YsOpen\Kernel\AccessTokenTrait;
+use YsOpen\Kernel\Application;
+use YsOpen\Kernel\Exception\ConfigErrorException;
+use YsOpen\Kernel\Types\Config;
 use YsOpen\IntelligenceClient\Client as IntelligenceClient;
 
 /**
@@ -25,19 +26,12 @@ class YsOpenFactory {
      * @param string $appName
      * @param array $config
      * @return mixed
-     * @throws \Kernel\Exception\ConfigErrorException
-     * @throws \ReflectionException
      */
     protected static function create(string $appName, array $config) {
         $namespace = ucfirst($appName);
         $applicationClass = "\\YsOpen\\{$namespace}\\Client";
         /**@var Application $application*/
-        $application = new $applicationClass;
-        $application::mixin(
-            new Config($config)
-        );
-        $accessToken = new AccessToken();
-        $application->setAccessToken($accessToken);
+        $application = new $applicationClass($config);
         return $application;
     }
 
@@ -45,8 +39,6 @@ class YsOpenFactory {
      * @param $name
      * @param $arguments
      * @return mixed
-     * @throws \Kernel\Exception\ConfigErrorException
-     * @throws \ReflectionException
      */
     public static function __callStatic($name, $arguments) {
         return self::create($name, ...$arguments);
