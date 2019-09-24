@@ -16,8 +16,8 @@ namespace YsOpen\Kernel\Contracts;
 interface AccessTokenInterface {
 
     /**
-     * @return string
+     * Clear AccessToken
      */
-    public function getToken(): string ;
+    public function clearToken() ;
 
 }

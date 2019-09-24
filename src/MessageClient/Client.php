@@ -23,6 +23,7 @@ class Client extends Application implements MessageInterface {
      * @param string $groupName
      * @return string
      * @throws CreateConsumerFailException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \YsOpen\Kernel\Exception\HttpException
      */
     public function createConsumer(string $groupName = 'group1'): string {
@@ -41,6 +42,7 @@ class Client extends Application implements MessageInterface {
      * @param string $consumerId 消费者Id
      * @param int $preCommit 是否开启自动提交模式
      * @param string $groupId 消费组ID
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \YsOpen\Kernel\Exception\HttpException
      */
     public function fetchMessage(string $consumerId, int $preCommit = 0, string $groupId = 'group1')
@@ -59,6 +61,7 @@ class Client extends Application implements MessageInterface {
 
     /**
      * @param string $consumerId
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \YsOpen\Kernel\Exception\HttpException
      */
     public function commit(string $consumerId)

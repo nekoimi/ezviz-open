@@ -25,6 +25,7 @@ class Client extends Application implements IntelligenceInterface {
      * @param string $setName 要创建的人脸集合的名称
      * @return string 创建成功后的人脸集合的唯一标识
      * @throws CreateFaceSetFailException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \YsOpen\Kernel\Exception\HttpException
      */
     public function createSet(string $setName): string
@@ -47,6 +48,7 @@ class Client extends Application implements IntelligenceInterface {
      *
      * @param array $setTokens 人脸集合的唯一标识，多个以英文逗号分割,一次最多支持 10 个
      * @return bool
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \YsOpen\Kernel\Exception\HttpException
      */
     public function removeSet(array $setTokens): bool
@@ -64,14 +66,16 @@ class Client extends Application implements IntelligenceInterface {
      * @param string $imageUri 人脸图片地址
      * @param array $options 人脸分析参数
      * @return array   人脸分析返回的接口数据
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \YsOpen\Kernel\Exception\HttpException
      */
     public function faceAnalysisByUri(string $imageUri, array $options = []): array
     {
+        $oper = rtrim((string)implode(',', $options), ',');
         return $this->doPost('api/lapp/intelligence/face/analysis/detect', array (
             'dataType'  => 0,
             'image'     => $imageUri,
-            'operation' => rtrim((string)implode(',', $options), ',') ?? "none"
+            'operation' => $oper === "" ? "none" : $oper
         ));
     }
 
@@ -81,14 +85,16 @@ class Client extends Application implements IntelligenceInterface {
      * @param string $imageBase64 人脸base64编码数据
      * @param array $options 人脸分析参数
      * @return array 人脸分析返回的接口数据
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \YsOpen\Kernel\Exception\HttpException
      */
     public function faceAnalysisByBase64(string $imageBase64, array $options = []): array
     {
+        $oper = rtrim((string)implode(',', $options), ',');
         return $this->doPost('api/lapp/intelligence/face/analysis/detect', array (
             'dataType'  => 1,
             'image'     => $imageBase64,
-            'operation' => rtrim((string)implode(',', $options), ',') ?? "none"
+            'operation' => $oper === "" ? "none" : $oper
         ));
     }
 
@@ -98,6 +104,7 @@ class Client extends Application implements IntelligenceInterface {
      * @param array $faceTokens 已检测的人脸唯一标识,多个以,分割,一次最多支持 10 个
      * @param string $setToken 人脸集合的唯一标识
      * @return bool
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \YsOpen\Kernel\Exception\HttpException
      */
     public function faceRegisterToSet(array $faceTokens, string $setToken): bool
@@ -116,6 +123,7 @@ class Client extends Application implements IntelligenceInterface {
      * @param array $faceTokens 已检测的人脸唯一标识,多个以,分割,一次最多支持 10 个
      * @param string $setToken 人脸集合的唯一标识
      * @return bool
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \YsOpen\Kernel\Exception\HttpException
      */
     public function faceRemoveFromSet(array $faceTokens, string $setToken): bool
@@ -134,6 +142,7 @@ class Client extends Application implements IntelligenceInterface {
      * @param string $faceToken1
      * @param string $faceToken2
      * @return float
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \YsOpen\Kernel\Exception\HttpException
      */
     public function faceCompareByFaceToken(string $faceToken1, string $faceToken2): float
@@ -157,6 +166,7 @@ class Client extends Application implements IntelligenceInterface {
      * @param string $imageBase64_1
      * @param string $imageBase64_2
      * @return float
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \YsOpen\Kernel\Exception\HttpException
      */
     public function faceCompareByBase64(string $imageBase64_1, string $imageBase64_2): float
@@ -183,6 +193,7 @@ class Client extends Application implements IntelligenceInterface {
      * @param int $threshold 识别阈值，范围为 0~100 之间，默认 80
      * @param int $matchCount 匹配成功计数，默认为 1 表示匹配成功一次后即结束识别, 0 表示需要识别集合中的所有人脸
      * @return array
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \YsOpen\Kernel\Exception\HttpException
      */
     public function faceSearchFromSet(string $faceToken, array $setTokens, int $limit = 1, int $threshold = 80, int $matchCount = 1): array
@@ -204,7 +215,7 @@ class Client extends Application implements IntelligenceInterface {
             'dataType'  => 2,
             'image'     => $faceToken,
             'operation' => $operation,
-            'topNum'    =>  $limit > 5 ? 5 : $limit
+            'topNum'    => $limit > 5 ? 5 : $limit
         ));
 
         if (array_key_exists('results', $result)) {
