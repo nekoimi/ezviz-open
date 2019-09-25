@@ -6,7 +6,6 @@
  * #                            ------
  **/
 
-
 namespace YsOpen\Kernel\Traits;
 
 use BadMethodCallException;

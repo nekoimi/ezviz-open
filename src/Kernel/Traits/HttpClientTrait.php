@@ -104,7 +104,7 @@ trait HttpClientTrait {
      * @throws HttpException
      */
     protected function doRequest(string $method, string $request_uri, $options = []) {
-        print_r($options);
+        $this->getLogHandler()->debug(sprintf("Request Options : %s", json_encode((array)$options, true)));
         return $this->clearResponse(
             $this->newClient(
                 $this->getDefaultOptions()
