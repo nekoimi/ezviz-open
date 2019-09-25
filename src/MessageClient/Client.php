@@ -1,10 +1,21 @@
 <?php
 /**
+ * ##################################################################################################
+ * # ------------Oooo---
+ * # -----------(----)---
+ * # ------------)--/----
+ * # ------------(_/-
+ * # ----oooO----
+ * # ----(---)----
+ * # -----\--(--
+ * # ------\_)-
  * # ----
  * #     Yprisoner <yyprisoner@gmail.com>
- * #                   19-9-23 上午10:05
+ * #
  * #                            ------
- **/
+ * #    「 涙の雨が頬をたたくたびに美しく 」
+ * ##################################################################################################
+ */
 
 namespace YsOpen\MessageClient;
 
@@ -15,8 +26,8 @@ use YsOpen\Kernel\Exception\CreateConsumerFailException;
  * Class Client
  * @package YsOpen\MessageClient
  */
-class Client extends Application implements MessageInterface {
-
+class Client extends Application implements MessageInterface
+{
     /**
      * 创建消费者
      *
@@ -26,7 +37,8 @@ class Client extends Application implements MessageInterface {
      * @throws \Psr\SimpleCache\InvalidArgumentException
      * @throws \YsOpen\Kernel\Exception\HttpException
      */
-    public function createConsumer(string $groupName = 'group1'): string {
+    public function createConsumer(string $groupName = 'group1'): string
+    {
         $consumers = $this->doPost("api/lapp/mq/v1/consumer/{$groupName}");
         if (array_key_exists('consumerId', $consumers)) {
             return $consumers['consumerId'];
@@ -47,16 +59,19 @@ class Client extends Application implements MessageInterface {
      */
     public function fetchMessage(string $consumerId, int $preCommit = 0, string $groupId = 'group1')
     {
-        $message = $this->doPost('api/lapp/mq/v1/consumer/messages', array (
+        $message = $this->doPost('api/lapp/mq/v1/consumer/messages', [
             'consumerId' => $consumerId,
             'preCommit'  => $preCommit
-        ));
+        ]);
         // 处理消息并提交
-        $this->getConsumerHandler()->handle($consumerId, $message, $groupId,
-            function () use ($consumerId)
-        {
-            $this->commit($consumerId);
-        });
+        $this->getConsumerHandler()->handle(
+            $consumerId,
+            $message,
+            $groupId,
+            function () use ($consumerId) {
+                $this->commit($consumerId);
+            }
+        );
     }
 
     /**
@@ -66,9 +81,8 @@ class Client extends Application implements MessageInterface {
      */
     public function commit(string $consumerId)
     {
-        $this->doPost('api/lapp/mq/v1/consumer/offsets', array (
+        $this->doPost('api/lapp/mq/v1/consumer/offsets', [
             'consumerId' => $consumerId
-        ));
+        ]);
     }
-
 }

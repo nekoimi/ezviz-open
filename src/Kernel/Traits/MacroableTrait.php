@@ -1,10 +1,21 @@
 <?php
 /**
+ * ##################################################################################################
+ * # ------------Oooo---
+ * # -----------(----)---
+ * # ------------)--/----
+ * # ------------(_/-
+ * # ----oooO----
+ * # ----(---)----
+ * # -----\--(--
+ * # ------\_)-
  * # ----
  * #     Yprisoner <yyprisoner@gmail.com>
- * #                   2019/9/22 23:03
+ * #
  * #                            ------
- **/
+ * #    「 涙の雨が頬をたたくたびに美しく 」
+ * ##################################################################################################
+ */
 
 namespace YsOpen\Kernel\Traits;
 
@@ -13,8 +24,8 @@ use Closure;
 use ReflectionClass;
 use ReflectionMethod;
 
-trait MacroableTrait {
-
+trait MacroableTrait
+{
     /**
      * @var array
      */
@@ -24,16 +35,17 @@ trait MacroableTrait {
      * @param $name
      * @param $macro
      */
-    public static function macro($name, $macro) {
+    public static function macro($name, $macro)
+    {
         static::$macros[$name] = $macro;
     }
-
 
     /**
      * @param $mixin
      * @throws \ReflectionException
      */
-    public static function mixin($mixin) {
+    public static function mixin($mixin)
+    {
         $methods = (new ReflectionClass($mixin))->getMethods(
             ReflectionMethod::IS_PUBLIC  | ReflectionMethod::IS_PROTECTED
         );
@@ -101,5 +113,4 @@ trait MacroableTrait {
 
         return call_user_func_array($macro, $parameters);
     }
-
 }

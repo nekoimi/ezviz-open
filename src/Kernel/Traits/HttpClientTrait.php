@@ -1,10 +1,21 @@
 <?php
 /**
+ * ##################################################################################################
+ * # ------------Oooo---
+ * # -----------(----)---
+ * # ------------)--/----
+ * # ------------(_/-
+ * # ----oooO----
+ * # ----(---)----
+ * # -----\--(--
+ * # ------\_)-
  * # ----
  * #     Yprisoner <yyprisoner@gmail.com>
- * #                   19-9-24 上午9:07
+ * #
  * #                            ------
- **/
+ * #    「 涙の雨が頬をたたくたびに美しく 」
+ * ##################################################################################################
+ */
 
 namespace YsOpen\Kernel\Traits;
 
@@ -15,13 +26,13 @@ use RuntimeException;
 use YsOpen\Kernel\Exception\HttpException;
 use YsOpen\Kernel\Types\ErrorCode;
 
-trait HttpClientTrait {
-
-
+trait HttpClientTrait
+{
     /**
      * Clear AccessToken
      */
-    public function clearToken() {
+    public function clearToken()
+    {
         /**@var CacheInterface $cacheHandler */
         $cacheHandler = $this->getCacheHandler();
         $cacheHandler->delete($this->getCacheKey());
@@ -33,28 +44,32 @@ trait HttpClientTrait {
      * @throws HttpException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    protected function getToken(bool $refresh = false): string {
+    protected function getToken(bool $refresh = false): string
+    {
         /**@var CacheInterface $cacheHandler */
         $cacheHandler = $this->getCacheHandler();
-        if ( !$refresh && $cacheHandler->has($this->getCacheKey()) ) {
+        if (!$refresh && $cacheHandler->has($this->getCacheKey())) {
             return $cacheHandler->get($this->getCacheKey());
         }
 
-        $result = $this->doRequest('POST', 'api/lapp/token/get', array (
+        $result = $this->doRequest(
+            'POST',
+            'api/lapp/token/get',
+            [
                 'form_params' => [
                     'appKey'    => $this->getAppKey(),
                     'appSecret' => $this->getAppSecret()
                 ]
-            )
+            ]
         );
 
         $accessToken = $result['accessToken'];
-        $this->getLogHandler()->debug(sprintf("AccessToken : %s", $accessToken));
+        $this->getLogHandler()->debug(sprintf('AccessToken : %s', $accessToken));
         if (! empty($accessToken)) {
             $cacheHandler->set($this->getCacheKey(), $accessToken, 6.5*24*3600);
         }
 
-        if ( !$cacheHandler->has($this->getCacheKey()) ) {
+        if (!$cacheHandler->has($this->getCacheKey())) {
             throw new RuntimeException('Failed to cache access token.');
         }
 
@@ -70,12 +85,13 @@ trait HttpClientTrait {
      * @throws HttpException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    protected function doGet(string $request_uri, array $query = [], array $headers = []) {
+    protected function doGet(string $request_uri, array $query = [], array $headers = [])
+    {
         $query = $this->setDefaultParams($query);
-        return $this->doRequest('GET', $request_uri, array (
+        return $this->doRequest('GET', $request_uri, [
             'headers' => $headers,
             'query'   => $query
-        ));
+        ]);
     }
 
     /**
@@ -87,12 +103,13 @@ trait HttpClientTrait {
      * @throws HttpException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    protected function doPost(string $request_uri, array $data = [], array $headers = []) {
+    protected function doPost(string $request_uri, array $data = [], array $headers = [])
+    {
         $data = $this->setDefaultParams($data);
-        return $this->doRequest('POST', $request_uri, array (
+        return $this->doRequest('POST', $request_uri, [
             'headers'     => $headers,
             'form_params' => $data
-        ));
+        ]);
     }
 
     /**
@@ -103,8 +120,9 @@ trait HttpClientTrait {
      * @return array
      * @throws HttpException
      */
-    protected function doRequest(string $method, string $request_uri, $options = []) {
-        $this->getLogHandler()->debug(sprintf("Request Options : %s", json_encode((array)$options, true)));
+    protected function doRequest(string $method, string $request_uri, $options = [])
+    {
+        $this->getLogHandler()->debug(sprintf('Request Options : %s', json_encode((array)$options, true)));
         return $this->clearResponse(
             $this->newClient(
                 $this->getDefaultOptions()
@@ -116,11 +134,12 @@ trait HttpClientTrait {
      * default options
      * @return array
      */
-    protected function getDefaultOptions() {
-        return array (
+    protected function getDefaultOptions()
+    {
+        return [
             'base_uri' => $this->getBaseUri(),
             'timeout'  => $this->getTimeOut(),
-        );
+        ];
     }
 
     /**
@@ -129,8 +148,9 @@ trait HttpClientTrait {
      * @throws HttpException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    protected function setDefaultParams(array $params = []) {
-        if ( !array_key_exists('accessToken', $params) ) {
+    protected function setDefaultParams(array $params = [])
+    {
+        if (!array_key_exists('accessToken', $params)) {
             $params['accessToken'] = $this->getToken();
         }
         return $params;
@@ -141,10 +161,10 @@ trait HttpClientTrait {
      * @param array $options
      * @return Client
      */
-    protected function newClient(array $options = array ()) {
+    protected function newClient(array $options = [])
+    {
         return new Client($options);
     }
-
 
     /***
      *
@@ -152,34 +172,39 @@ trait HttpClientTrait {
      * @return mixed|string
      * @throws HttpException
      */
-    protected function clearResponse(ResponseInterface $response) {
+    protected function clearResponse(ResponseInterface $response)
+    {
         $contents = $response->getBody()->getContents();
         $this->getLogHandler()->debug($contents);
-        if ( $response->getStatusCode() == 200 ) {
+        if ($response->getStatusCode() == 200) {
             $results = json_decode((string)$contents, true);
-            if ( array_key_exists('code', $results) ) {
+            if (array_key_exists('code', $results)) {
                 $resultCode = $results['code'];
-                if ( $resultCode == 200 ) {
-                    if ( array_key_exists('data', $results) ) {
+                if ($resultCode == 200) {
+                    if (array_key_exists('data', $results)) {
                         return $results['data'];
                     }
                     return $results;
                 } else {
                     throw new HttpException(
-                        sprintf("YsOpen request err. Code: %s, Message: %s ",
-                            $resultCode ?? - 200, ErrorCode::message($resultCode))
+                        sprintf(
+                            'YsOpen request err. Code: %s, Message: %s ',
+                            $resultCode ?? - 200,
+                            ErrorCode::message($resultCode)
+                        )
                     );
                 }
             }
             throw new HttpException(
-                sprintf("YsOpen request err. StatusCode: %s, Message: %s ",
-                    $response->getStatusCode(), $results['msg'])
+                sprintf(
+                    'YsOpen request err. StatusCode: %s, Message: %s ',
+                    $response->getStatusCode(),
+                    $results['msg']
+                )
             );
         }
         throw new HttpException(
-            sprintf("YsOpen request err. StatusCode: %s ", $response->getStatusCode())
+            sprintf('YsOpen request err. StatusCode: %s ', $response->getStatusCode())
         );
     }
-
-
 }

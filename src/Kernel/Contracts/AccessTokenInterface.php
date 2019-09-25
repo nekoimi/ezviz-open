@@ -1,11 +1,21 @@
 <?php
 /**
+ * ##################################################################################################
+ * # ------------Oooo---
+ * # -----------(----)---
+ * # ------------)--/----
+ * # ------------(_/-
+ * # ----oooO----
+ * # ----(---)----
+ * # -----\--(--
+ * # ------\_)-
  * # ----
  * #     Yprisoner <yyprisoner@gmail.com>
- * #                   2019/9/22 22:09
+ * #
  * #                            ------
- **/
-
+ * #    「 涙の雨が頬をたたくたびに美しく 」
+ * ##################################################################################################
+ */
 
 namespace YsOpen\Kernel\Contracts;
 
@@ -13,11 +23,10 @@ namespace YsOpen\Kernel\Contracts;
  * Interface AccessTokenInterface
  * @package YsOpen\Kernel\Contracts
  */
-interface AccessTokenInterface {
-
+interface AccessTokenInterface
+{
     /**
      * Clear AccessToken
      */
     public function clearToken() ;
-
 }

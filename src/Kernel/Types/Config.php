@@ -1,10 +1,21 @@
 <?php
 /**
+ * ##################################################################################################
+ * # ------------Oooo---
+ * # -----------(----)---
+ * # ------------)--/----
+ * # ------------(_/-
+ * # ----oooO----
+ * # ----(---)----
+ * # -----\--(--
+ * # ------\_)-
  * # ----
  * #     Yprisoner <yyprisoner@gmail.com>
- * #                   19-9-24 上午8:53
+ * #
  * #                            ------
- **/
+ * #    「 涙の雨が頬をたたくたびに美しく 」
+ * ##################################################################################################
+ */
 
 namespace YsOpen\Kernel\Types;
 
@@ -17,8 +28,8 @@ use YsOpen\Kernel\Exception\ConfigErrorException;
  * Class Config
  * @package YsOpen\Kernel\Types
  */
-class Config {
-
+class Config
+{
     /**
      * @var string
      */
@@ -78,12 +89,11 @@ class Config {
         foreach (['cacheHandler', 'logHandler', 'consumerHandler'] as $handler) {
             if (is_null($this->{$handler})) {
                 throw new ConfigErrorException(
-                    sprintf(sprintf("Config err. %s err.", $handler))
+                    sprintf(sprintf('Config err. %s err.', $handler))
                 );
             }
         }
     }
-
 
     /**
      * @param string $handlerName
@@ -172,6 +182,4 @@ class Config {
     {
         return $this->consumerHandler;
     }
-
-
 }

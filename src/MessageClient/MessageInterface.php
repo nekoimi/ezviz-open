@@ -1,15 +1,26 @@
 <?php
 /**
+ * ##################################################################################################
+ * # ------------Oooo---
+ * # -----------(----)---
+ * # ------------)--/----
+ * # ------------(_/-
+ * # ----oooO----
+ * # ----(---)----
+ * # -----\--(--
+ * # ------\_)-
  * # ----
  * #     Yprisoner <yyprisoner@gmail.com>
- * #                   19-9-23 上午11:35
+ * #
  * #                            ------
- **/
+ * #    「 涙の雨が頬をたたくたびに美しく 」
+ * ##################################################################################################
+ */
 
 namespace YsOpen\MessageClient;
 
-interface MessageInterface {
-
+interface MessageInterface
+{
     /**
      * 创建消费者
      *
@@ -17,7 +28,6 @@ interface MessageInterface {
      * @return string
      */
     public function createConsumer(string $groupName): string ;
-
 
     /**
      * 获取消息
@@ -28,10 +38,8 @@ interface MessageInterface {
      */
     public function fetchMessage(string $consumerId, int $preCommit = 0, string $groupId = 'group1');
 
-
     /**
      * @param string $consumerId
      */
     public function commit(string $consumerId);
-
 }

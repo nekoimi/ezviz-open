@@ -1,10 +1,21 @@
 <?php
 /**
+ * ##################################################################################################
+ * # ------------Oooo---
+ * # -----------(----)---
+ * # ------------)--/----
+ * # ------------(_/-
+ * # ----oooO----
+ * # ----(---)----
+ * # -----\--(--
+ * # ------\_)-
  * # ----
  * #     Yprisoner <yyprisoner@gmail.com>
- * #                   19-9-23 上午10:56
+ * #
  * #                            ------
- **/
+ * #    「 涙の雨が頬をたたくたびに美しく 」
+ * ##################################################################################################
+ */
 
 namespace YsOpen\IntelligenceClient;
 
@@ -17,8 +28,8 @@ use YsOpen\Kernel\Exception\CreateFaceSetFailException;
  *
  * AI智能
  */
-class Client extends Application implements IntelligenceInterface {
-
+class Client extends Application implements IntelligenceInterface
+{
     /**
      * 创建人脸集合
      *
@@ -30,9 +41,9 @@ class Client extends Application implements IntelligenceInterface {
      */
     public function createSet(string $setName): string
     {
-        $result = $this->doPost('api/lapp/intelligence/face/set/create', array (
+        $result = $this->doPost('api/lapp/intelligence/face/set/create', [
             'setName' => $setName
-        ));
+        ]);
 
         if (array_key_exists('setToken', $result)) {
             return $result['setToken'];
@@ -53,9 +64,9 @@ class Client extends Application implements IntelligenceInterface {
      */
     public function removeSet(array $setTokens): bool
     {
-        $this->doPost('api/lapp/intelligence/face/set/delete', array (
+        $this->doPost('api/lapp/intelligence/face/set/delete', [
             'setTokens' => implode(',', $setTokens)
-        ));
+        ]);
 
         return true;
     }
@@ -72,11 +83,11 @@ class Client extends Application implements IntelligenceInterface {
     public function faceAnalysisByUri(string $imageUri, array $options = []): array
     {
         $oper = rtrim((string)implode(',', $options), ',');
-        return $this->doPost('api/lapp/intelligence/face/analysis/detect', array (
+        return $this->doPost('api/lapp/intelligence/face/analysis/detect', [
             'dataType'  => 0,
             'image'     => $imageUri,
-            'operation' => $oper === "" ? "none" : $oper
-        ));
+            'operation' => $oper === '' ? 'none' : $oper
+        ]);
     }
 
     /**
@@ -91,11 +102,11 @@ class Client extends Application implements IntelligenceInterface {
     public function faceAnalysisByBase64(string $imageBase64, array $options = []): array
     {
         $oper = rtrim((string)implode(',', $options), ',');
-        return $this->doPost('api/lapp/intelligence/face/analysis/detect', array (
+        return $this->doPost('api/lapp/intelligence/face/analysis/detect', [
             'dataType'  => 1,
             'image'     => $imageBase64,
-            'operation' => $oper === "" ? "none" : $oper
-        ));
+            'operation' => $oper === '' ? 'none' : $oper
+        ]);
     }
 
     /**
@@ -109,10 +120,10 @@ class Client extends Application implements IntelligenceInterface {
      */
     public function faceRegisterToSet(array $faceTokens, string $setToken): bool
     {
-        $this->doPost('api/lapp/intelligence/face/set/register', array (
+        $this->doPost('api/lapp/intelligence/face/set/register', [
             'faceTokens' => implode(',', $faceTokens),
             'setToken'   => $setToken
-        ));
+        ]);
 
         return true;
     }
@@ -128,10 +139,10 @@ class Client extends Application implements IntelligenceInterface {
      */
     public function faceRemoveFromSet(array $faceTokens, string $setToken): bool
     {
-        $this->doPost('api/lapp/intelligence/face/set/remove', array (
+        $this->doPost('api/lapp/intelligence/face/set/remove', [
             'faceTokens' => implode(',', $faceTokens),
             'setToken'   => $setToken
-        ));
+        ]);
 
         return true;
     }
@@ -147,11 +158,11 @@ class Client extends Application implements IntelligenceInterface {
      */
     public function faceCompareByFaceToken(string $faceToken1, string $faceToken2): float
     {
-        $result = $this->doPost('api/lapp/intelligence/face/analysis/compare', array (
+        $result = $this->doPost('api/lapp/intelligence/face/analysis/compare', [
             'dataType'    => 2,
             'imageParam1' => $faceToken1,
             'imageParam2' => $faceToken2
-        ));
+        ]);
 
         if (array_key_exists('score', $result)) {
             return $result['score'];
@@ -171,11 +182,11 @@ class Client extends Application implements IntelligenceInterface {
      */
     public function faceCompareByBase64(string $imageBase64_1, string $imageBase64_2): float
     {
-        $result = $this->doPost('api/lapp/intelligence/face/analysis/compare', array (
+        $result = $this->doPost('api/lapp/intelligence/face/analysis/compare', [
             'dataType'    => 1,
             'imageParam1' => $imageBase64_1,
             'imageParam2' => $imageBase64_2
-        ));
+        ]);
 
         if (array_key_exists('score', $result)) {
             return $result['score'];
@@ -199,7 +210,7 @@ class Client extends Application implements IntelligenceInterface {
     public function faceSearchFromSet(string $faceToken, array $setTokens, int $limit = 1, int $threshold = 80, int $matchCount = 1): array
     {
         // 初始化搜索条件
-        $operation = array ();
+        $operation = [];
 
         // 生成搜索条件
         array_walk($setTokens, function ($value) use (&$operation, $threshold, $matchCount) {
@@ -211,12 +222,12 @@ class Client extends Application implements IntelligenceInterface {
         });
 
         // 检索
-        $result = $this->doPost('api/lapp/intelligence/face/analysis/search', array (
+        $result = $this->doPost('api/lapp/intelligence/face/analysis/search', [
             'dataType'  => 2,
             'image'     => $faceToken,
             'operation' => $operation,
             'topNum'    => $limit > 5 ? 5 : $limit
-        ));
+        ]);
 
         if (array_key_exists('results', $result)) {
             return $result['results'];
@@ -224,5 +235,4 @@ class Client extends Application implements IntelligenceInterface {
 
         return [];
     }
-
 }

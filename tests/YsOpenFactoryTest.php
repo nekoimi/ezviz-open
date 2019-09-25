@@ -1,5 +1,21 @@
 <?php
-
+/**
+ * ##################################################################################################
+ * # ------------Oooo---
+ * # -----------(----)---
+ * # ------------)--/----
+ * # ------------(_/-
+ * # ----oooO----
+ * # ----(---)----
+ * # -----\--(--
+ * # ------\_)-
+ * # ----
+ * #     Yprisoner <yyprisoner@gmail.com>
+ * #
+ * #                            ------
+ * #    「 涙の雨が頬をたたくたびに美しく 」
+ * ##################################################################################################
+ */
 namespace YsOpen\Tests;
 
 use Psr\SimpleCache\InvalidArgumentException;
@@ -10,18 +26,18 @@ use Psr\SimpleCache\InvalidArgumentException;
  * #                   19-9-23 下午3:07
  * #                            ------
  **/
-class YsOpenFactoryTest extends TestCase {
-
+class YsOpenFactoryTest extends TestCase
+{
     public function testStart()
     {
-        $config = array (
+        $config = [
             'appKey'          => '',
             'appSecret'       => '',
             'cacheHandler'    => CacheHandler::class,
             'logHandler'      => LogHandler::class,
             'consumerHandler' => ConsumerHandler::class,
             'timeOut'         => 30
-        );
+        ];
         $application = \YsOpen\YsOpenFactory::messageClient($config);
         try {
             var_dump($application->createConsumer('demo'));
@@ -31,5 +47,4 @@ class YsOpenFactoryTest extends TestCase {
             print_r($e->getMessage());
         }
     }
-
 }

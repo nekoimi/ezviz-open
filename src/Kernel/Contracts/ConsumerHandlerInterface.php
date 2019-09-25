@@ -1,10 +1,21 @@
 <?php
 /**
+ * ##################################################################################################
+ * # ------------Oooo---
+ * # -----------(----)---
+ * # ------------)--/----
+ * # ------------(_/-
+ * # ----oooO----
+ * # ----(---)----
+ * # -----\--(--
+ * # ------\_)-
  * # ----
  * #     Yprisoner <yyprisoner@gmail.com>
- * #                   19-9-23 上午9:47
+ * #
  * #                            ------
- **/
+ * #    「 涙の雨が頬をたたくたびに美しく 」
+ * ##################################################################################################
+ */
 
 namespace YsOpen\Kernel\Contracts;
 
@@ -14,8 +25,8 @@ namespace YsOpen\Kernel\Contracts;
  *
  * 消息消费者
  */
-interface ConsumerHandlerInterface {
-
+interface ConsumerHandlerInterface
+{
     /**
      * 消费莹石云获取的消息
      *
@@ -25,5 +36,4 @@ interface ConsumerHandlerInterface {
      * @param callable|null $commitCallback
      */
     public function handle(string $consumerId, array $message, string $groupId = 'group1', callable $commitCallback = null);
-
 }

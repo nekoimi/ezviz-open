@@ -1,10 +1,21 @@
 <?php
 /**
+ * ##################################################################################################
+ * # ------------Oooo---
+ * # -----------(----)---
+ * # ------------)--/----
+ * # ------------(_/-
+ * # ----oooO----
+ * # ----(---)----
+ * # -----\--(--
+ * # ------\_)-
  * # ----
  * #     Yprisoner <yyprisoner@gmail.com>
- * #                   2019/9/22 22:16
+ * #
  * #                            ------
- **/
+ * #    「 涙の雨が頬をたたくたびに美しく 」
+ * ##################################################################################################
+ */
 
 namespace YsOpen;
 
@@ -21,8 +32,8 @@ use YsOpen\MessageClient\Client as MessageQueueClient;
  * @method static IntelligenceClient intelligenceClient(array $config)  AI智能
  * @method static MessageQueueClient messageClient(array $config)       消息通道
  */
-class YsOpenFactory {
-
+class YsOpenFactory
+{
     /**
      * @param string $appName
      * @param array $config
@@ -30,7 +41,8 @@ class YsOpenFactory {
      * @throws ConfigErrorException
      * @throws \ReflectionException
      */
-    protected static function create(string $appName, array $config): Application {
+    protected static function create(string $appName, array $config): Application
+    {
         $namespace = ucfirst($appName);
         $applicationClass = "\\YsOpen\\{$namespace}\\Client";
         /**@var Application $application*/
@@ -48,8 +60,8 @@ class YsOpenFactory {
      * @throws ConfigErrorException
      * @throws \ReflectionException
      */
-    public static function __callStatic($name, $arguments) {
+    public static function __callStatic($name, $arguments)
+    {
         return self::create($name, ...$arguments);
     }
-
 }

@@ -1,12 +1,24 @@
 <?php
 /**
+ * ##################################################################################################
+ * # ------------Oooo---
+ * # -----------(----)---
+ * # ------------)--/----
+ * # ------------(_/-
+ * # ----oooO----
+ * # ----(---)----
+ * # -----\--(--
+ * # ------\_)-
  * # ----
  * #     Yprisoner <yyprisoner@gmail.com>
- * #                   19-9-23 上午10:57
+ * #
  * #                            ------
- **/
+ * #    「 涙の雨が頬をたたくたびに美しく 」
+ * ##################################################################################################
+ */
 
 namespace YsOpen\IntelligenceClient;
+
 /**
  * Class IntelligenceInterface
  * @package YsOpen\Kernel\Contracts
@@ -15,8 +27,8 @@ namespace YsOpen\IntelligenceClient;
  * @link https://open.ys7.com/doc/zh/book/index/ai/face.html
  *
  */
-interface IntelligenceInterface {
-
+interface IntelligenceInterface
+{
     /**
      * 创建人脸集合
      *
@@ -32,7 +44,6 @@ interface IntelligenceInterface {
      * @return bool
      */
     public function removeSet(array $setTokens): bool;
-
 
     /**
      * 通过图片地址分析人脸信息
@@ -52,7 +63,6 @@ interface IntelligenceInterface {
      */
     public function faceAnalysisByBase64(string $imageBase64, array $options = []): array;
 
-
     /**
      * 注册人脸到集合
      *
@@ -61,7 +71,6 @@ interface IntelligenceInterface {
      * @return bool
      */
     public function faceRegisterToSet(array $faceTokens, string $setToken): bool;
-
 
     /**
      * 注销人脸数据
@@ -72,7 +81,6 @@ interface IntelligenceInterface {
      */
     public function faceRemoveFromSet(array $faceTokens, string $setToken): bool;
 
-
     /**
      * 通过已检测出人脸的 faceToken 对比人脸相似度
      *
@@ -82,7 +90,6 @@ interface IntelligenceInterface {
      */
     public function faceCompareByFaceToken(string $faceToken1, string $faceToken2): float;
 
-
     /**
      * 通过人脸图片的Base64 对比人脸相似度
      *
@@ -91,7 +98,6 @@ interface IntelligenceInterface {
      * @return float
      */
     public function faceCompareByBase64(string $imageBase64_1, string $imageBase64_2): float;
-
 
     /**
      * 通过 faceToken 搜索人脸
@@ -104,5 +110,4 @@ interface IntelligenceInterface {
      * @return array
      */
     public function faceSearchFromSet(string $faceToken, array $setTokens, int $limit = 1, int $threshold = 80, int $matchCount = 1): array;
-
 }
