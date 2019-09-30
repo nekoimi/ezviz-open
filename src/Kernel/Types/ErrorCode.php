@@ -19,8 +19,7 @@
 
 namespace YsOpen\Kernel\Types;
 
-class ErrorCode
-{
+class ErrorCode {
     /**
      * 参见萤石云官方文档
      *
@@ -211,6 +210,7 @@ class ErrorCode
         60084 => '当前正在关闭隐私遮蔽',
 
         60203 => '未开通相关服务',
+        60216 => '人脸质量差',
         70110 => '参数不合法',
     ];
 
