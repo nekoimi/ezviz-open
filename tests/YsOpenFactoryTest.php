@@ -38,9 +38,9 @@ class YsOpenFactoryTest extends TestCase
             'consumerHandler' => ConsumerHandler::class,
             'timeOut'         => 30
         ];
-        $application = \YsOpen\YsOpenFactory::messageClient($config);
+        $application = \YsOpen\YsOpenFactory::intelligenceClient($config);
         try {
-            var_dump($application->createConsumer('demo'));
+            var_dump($application->faceSearchFromSet('fff', ['aaa']));
         } catch (\Exception $e) {
             print_r($e->getMessage());
         } catch (InvalidArgumentException $e) {
