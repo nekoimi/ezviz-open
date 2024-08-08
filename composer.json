@@ -1,10 +1,10 @@
 {
-  "name": "yprisoner/mexysopen",
+  "name": "nekoimi/ezviz-open",
   "description": "萤石云开发SDK",
   "authors": [
     {
-      "name": "yprisoner",
-      "email": "yyprisoner@gmail.com"
+      "name": "nekoimi",
+      "email": "nekoimime@gmail.com"
     }
   ],
   "license": "MIT",
